@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package order_lifecycle;
+
+service OrderLifecycle {
+  rpc CreateOrder(CreateOrderRequest) returns (Order) {}
+  rpc ConfirmOrder(ConfirmOrderRequest) returns (Order) {}
+  rpc CompleteOrder(CompleteOrderRequest) returns (Order) {}
+  rpc CancelOrder(CancelOrderRequest) returns (Order) {}
+}
+
+message CreateOrderRequest {
+  string customer_id = 1;
+  string merchant_id = 2;
+
+  string item = 3;
+  int32 quantity = 4;
+}
+
+message  ConfirmOrderRequest {
+  string order_id = 1;
+}
+
+message CompleteOrderRequest{
+  string order_id = 1;
+}
+
+message CancelOrderRequest{
+  string order_id = 1;
+  string reason = 2;
+}
+
+message Order {
+  string id = 1;
+  string item = 2;
+  int32 quantity = 3;
+  string merchant_id = 4;
+  string customer_id = 5;
+}

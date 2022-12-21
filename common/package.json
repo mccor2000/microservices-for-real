@@ -1,0 +1,19 @@
+{
+  "name": "@microservices-for-real/common",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.jd",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "eslint src/",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}

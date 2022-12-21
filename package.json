@@ -1,0 +1,16 @@
+{
+  "name": "microservices-for-real",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "common",
+      "api-gateway",
+      "order-lifecycle",
+      "order-provider",
+      "notification"
+    ],
+    "nohoist": [
+      "**"
+    ]
+  }
+}
