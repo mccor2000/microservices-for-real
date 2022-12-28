@@ -2,10 +2,10 @@
   "name": "@microservices-for-real/common",
   "version": "0.0.0",
   "private": true,
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "prebuild": "rimraf lib",
+    "prebuild": "rimraf dist",
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "eslint src/",

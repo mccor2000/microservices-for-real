@@ -32,7 +32,7 @@ export class AppService implements OrderLifecycleService {
         const order = Order.Create(request)
 
         await this.repo.save(order)
-        await this.publisher.publish('order-created', { order })
+        await this.publisher.produce('order-created', { order })
 
         return order
     }
@@ -45,7 +45,7 @@ export class AppService implements OrderLifecycleService {
         const confirmed = Order.Confirm(order)
 
         await this.repo.save(Order.Confirm(order))
-        await this.publisher.publish('order-confirmed', {})
+        await this.publisher.produce('order-confirmed', {})
 
         return confirmed
     }
@@ -58,7 +58,7 @@ export class AppService implements OrderLifecycleService {
         const completed = Order.Complete(order)
 
         await this.repo.save(order)
-        await this.publisher.publish('order-completed', {})
+        await this.publisher.produce('order-completed', {})
 
         return completed
     }
@@ -71,7 +71,7 @@ export class AppService implements OrderLifecycleService {
         const cancelled = Order.Cancel(order)
 
         await this.repo.save(order)
-        await this.publisher.publish('order-cancelled', {})
+        await this.publisher.produce('order-cancelled', {})
 
         return cancelled
     }

@@ -20,5 +20,5 @@ export interface IOrderRepo {
 }
 
 export interface IOrderEventPublisher {
-    publish(eventKey: string, data: any): Promise<void>
+    produce(eventKey: string, data: any): Promise<void>
 }

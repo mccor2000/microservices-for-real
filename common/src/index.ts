@@ -15,4 +15,7 @@ export {
 
 export { OrderProviderService, OrderProviderServiceClientImpl } from './proto/order_provider'
 
-export * from './kafka'
+export * from './event-pubsub/event-pubsub.module'
+export * from './event-pubsub/event-pubsub.interfaces'
+export * from './event-pubsub/kafka/kafka.consumer'
+export * from './event-pubsub/kafka/kafka.producer'
