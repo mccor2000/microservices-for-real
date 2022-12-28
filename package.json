@@ -1,16 +1,17 @@
 {
   "name": "microservices-for-real",
+  "version": "0.0.0",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "common",
-      "api-gateway",
-      "order-lifecycle",
-      "order-provider",
-      "notification"
-    ],
-    "nohoist": [
-      "**"
-    ]
+  "workspaces": [
+    "common",
+    "api-gateway",
+    "order-lifecycle",
+    "order-provider",
+    "notification"
+  ],
+  "repository": "git@github.com:mccor2000/microservices-for-real.git",
+  "license": "MIT",
+  "dependencies": {
+    "ts-proto": "^1.136.1"
   }
 }

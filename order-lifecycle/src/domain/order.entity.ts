@@ -1,15 +1,13 @@
 
 export interface CreateOrderProps {
-    item: string
-    quantity: number
+    items: string[]
     customerId: string
     merchantId: string
 }
 
 export class Order {
     id: string
-    item: string
-    quantity: number
+    items: string[]
 
     customerId: string
     merchantId: string

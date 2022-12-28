@@ -1,19 +1,34 @@
 {
   "name": "@microservices-for-real/common",
-  "version": "1.0.0",
+  "version": "0.0.0",
+  "private": true,
   "main": "lib/index.js",
-  "types": "lib/index.d.jd",
+  "types": "lib/index.d.ts",
   "scripts": {
+    "prebuild": "rimraf lib",
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "eslint src/",
     "test": "jest"
   },
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/microservices": "^9.2.1",
+    "kafkajs": "^2.2.3",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.7.4"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "typescript": "^4.9.4"
   }
 }

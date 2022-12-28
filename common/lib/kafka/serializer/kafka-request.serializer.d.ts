@@ -1,0 +1,12 @@
+/// <reference types="node" />
+import { Serializer } from '@nestjs/microservices';
+export interface KafkaRequest<T = any> {
+    key: Buffer | string | null;
+    value: T;
+    topic: string;
+    headers: Record<string, any>;
+}
+export declare class KafkaRequestSerializer implements Serializer<any, KafkaRequest> {
+    serialize(value: any): KafkaRequest;
+    encode(value: any): Buffer | string | null;
+}
