@@ -39,7 +39,7 @@ class KafkaProducer {
     constructor(topic, broker) {
         this.topic = topic;
         this.client = new kafkajs_1.Kafka({ brokers: [broker] });
-        this.producer = this.client.producer();
+        this.producer = this.client.producer({ createPartitioner: kafkajs_1.Partitioners.LegacyPartitioner });
         this.logger = new common_1.Logger(`topic: ${this.topic}`);
     }
     connect() {

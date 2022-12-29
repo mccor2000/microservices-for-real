@@ -1,20 +1,20 @@
 import { Inject } from "@nestjs/common";
-import { 
+import {
     OrderLifecycleService,
-    CreateOrderRequest, 
-    CreateOrderResponse, 
-    ConfirmOrderRequest, 
-    ConfirmOrderResponse, 
-    CompleteOrderRequest, 
-    CompleteOrderResponse, 
-    CancelOrderRequest, 
-    CancelOrderResponse, 
+    CreateOrderRequest,
+    CreateOrderResponse,
+    ConfirmOrderRequest,
+    ConfirmOrderResponse,
+    CompleteOrderRequest,
+    CompleteOrderResponse,
+    CancelOrderRequest,
+    CancelOrderResponse,
 } from "@microservices-for-real/common";
-import { 
-    IOrderEventPublisher, 
-    IOrderRepo, 
-    ORDER_EVENT_PUBLISHER, 
-    ORDER_REPO 
+import {
+    IOrderEventPublisher,
+    IOrderRepo,
+    ORDER_EVENT_PUBLISHER,
+    ORDER_REPO
 } from "src/domain/order.ports";
 
 import { Order } from "src/domain/order.entity";
@@ -25,14 +25,14 @@ export class AppService implements OrderLifecycleService {
         readonly repo: IOrderRepo,
         @Inject(ORDER_EVENT_PUBLISHER)
         readonly publisher: IOrderEventPublisher,
-    ) {}
+    ) { }
 
 
     async CreateOrder(request: CreateOrderRequest): Promise<CreateOrderResponse> {
         const order = Order.Create(request)
 
         await this.repo.save(order)
-        await this.publisher.produce('order-created', { order })
+        await this.publisher.produce('order-lifecycle', order.id, { order })
 
         return order
     }
@@ -45,7 +45,7 @@ export class AppService implements OrderLifecycleService {
         const confirmed = Order.Confirm(order)
 
         await this.repo.save(Order.Confirm(order))
-        await this.publisher.produce('order-confirmed', {})
+        await this.publisher.produce('order-lifecycle', orderId, { order })
 
         return confirmed
     }
@@ -58,7 +58,7 @@ export class AppService implements OrderLifecycleService {
         const completed = Order.Complete(order)
 
         await this.repo.save(order)
-        await this.publisher.produce('order-completed', {})
+        await this.publisher.produce('order-lifecycle', orderId, { order })
 
         return completed
     }
@@ -71,7 +71,7 @@ export class AppService implements OrderLifecycleService {
         const cancelled = Order.Cancel(order)
 
         await this.repo.save(order)
-        await this.publisher.produce('order-cancelled', {})
+        await this.publisher.produce('order-lifcycle', orderId, { order })
 
         return cancelled
     }

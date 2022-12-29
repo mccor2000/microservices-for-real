@@ -62,6 +62,7 @@ class KafkaConsumer {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.consumer.subscribe(this.topic);
             yield this.consumer.run({
+                partitionsConsumedConcurrently: 3,
                 eachMessage: ({ message, partition }) => __awaiter(this, void 0, void 0, function* () {
                     this.logger.debug(`Processing message partition ${partition}`);
                     yield onMessage(message);

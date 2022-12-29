@@ -1,5 +1,5 @@
 import { Logger, OnApplicationShutdown } from "@nestjs/common";
-import { Kafka, Message, Producer } from "kafkajs";
+import { Kafka, Message, Partitioners, Producer } from "kafkajs";
 
 import { IProducer } from "../event-pubsub.interfaces";
 
@@ -33,7 +33,7 @@ export class KafkaProducer implements IProducer {
 
     constructor(private readonly topic: string, broker: string) {
         this.client = new Kafka({ brokers: [broker]})
-        this.producer = this.client.producer()
+        this.producer = this.client.producer({ createPartitioner: Partitioners.LegacyPartitioner })
         this.logger = new Logger(`topic: ${this.topic}`)
     }
 

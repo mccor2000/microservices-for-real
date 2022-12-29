@@ -1,4 +1,5 @@
 import { Logger, OnApplicationShutdown } from "@nestjs/common";
+import AsyncRetry from "async-retry";
 import { Consumer, ConsumerConfig, ConsumerSubscribeTopics, Kafka, Message } from "kafkajs";
 
 import { IConsumer } from "../event-pubsub.interfaces";
@@ -6,13 +7,13 @@ import { IConsumer } from "../event-pubsub.interfaces";
 export class KafkaConsumerService implements OnApplicationShutdown {
     private readonly consumers: IConsumer[] = []
 
-    constructor(private readonly broker: string = "127.0.0.1:9092") {}
+    constructor(private readonly broker: string = "127.0.0.1:9092") { }
 
     async onApplicationShutdown() {
         await Promise.all(this.consumers.map(c => c.disconnect()))
     }
 
-    async consume({ topic, config, onMessage}: KafkaConsumerOpts): Promise<void> {
+    async consume({ topic, config, onMessage }: KafkaConsumerOpts): Promise<void> {
         const consumer = new KafkaConsumer(topic, config, this.broker)
 
         await consumer.connect()
@@ -60,10 +61,23 @@ export class KafkaConsumer implements IConsumer {
     async consume(onMessage: (msg: Message) => Promise<void>): Promise<void> {
         await this.consumer.subscribe(this.topic);
         await this.consumer.run({
-            eachMessage: async ({ message, partition}) => {
+            eachMessage: async ({ message, partition }) => {
                 this.logger.debug(`Processing message partition ${partition}`)
-                await onMessage(message)
+                try {
+                    await AsyncRetry(async () => onMessage(message), {
+                        retries: 3, onRetry: (e, attempt) => {
+                            this.logger.error(`Error consuming message, executing retry ${attempt}/3`, e)
+                        }
+                    })
+                } catch (err) {
+                    this.logger.error('Error consuming message. Adding to DLQ...', err)
+                    await this.addMessageToDLQ(message)
+                }
             }
         })
+    }
+
+    private async addMessageToDLQ(msg: Message) {
+        console.log('adding message to DLQ - Mongodb')
     }
 }

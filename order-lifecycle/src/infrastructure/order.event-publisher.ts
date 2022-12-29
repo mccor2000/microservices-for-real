@@ -1,3 +1,4 @@
+import { KafkaProducerService } from "@microservices-for-real/common";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { IOrderEventPublisher } from "src/domain/order.ports";
 
@@ -7,14 +8,15 @@ export class OrderEventPublisher implements IOrderEventPublisher {
 
     constructor(
         @Inject('KAFKA_PRODUCER_SERVICE')
-        private readonly producerService: IOrderEventPublisher
+        private readonly producerService: KafkaProducerService
     ) { }
 
-    async produce(eventKey: string, data: any): Promise<void> {
-        return this.producerService.produce(eventKey,
+    async produce(eventTopic: string, eventKey: string, data: any): Promise<void> {
+        return this.producerService.produce(eventTopic,
             {
                 key: eventKey,
-                value: JSON.stringify(data)
+                value: JSON.stringify(data),
+                partition: 1,
             }
         )
     }

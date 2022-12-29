@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto"
 
 export interface CreateOrderProps {
     items: string[]
@@ -14,7 +15,7 @@ export class Order {
 
     static Create(props: CreateOrderProps): Order {
         return {
-            id: '1',
+            id: randomUUID(),
             ...props
         }
     }

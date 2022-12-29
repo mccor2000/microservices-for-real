@@ -1,19 +1,25 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
-import { IHeaders, KafkaService, SubscribeTo } from "@microservices-for-real/common";
+import { KafkaConsumerService } from "@microservices-for-real/common";
 
 @Injectable()
 export class OrderProviderSubscriber implements OnModuleInit {
     constructor(
-        @Inject('KAFKA')
-        private client: KafkaService
+        @Inject('KAFKA_CONSUMER_SERVICE')
+        private readonly consumerService: KafkaConsumerService
     ) { }
 
-    onModuleInit(): void {
-        this.client.subscribeToResponseOf('order.lifecycle', this)
+    async onModuleInit() {
+        await this.consumerService.consume({
+            topic: { topics: ['order-lifecycle'] },
+            config: { 
+                groupId: 'order-lifecycle-consumer', 
+                rebalanceTimeout: 1000
+            },
+            onMessage: this.onOrderCreated
+        })
     }
 
-    @SubscribeTo('order.lifecycle')
-    async getWorld(data: any, key: any, offset: number, timestamp: number, partition: number, headers: IHeaders): Promise<void> {
-        console.log(data, key)
+    async onOrderCreated(msg: any): Promise<void> {
+        console.log(String(msg.key), String(msg.value))
     }
 }
