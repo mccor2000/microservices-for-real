@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-deployment
+  labels:
+    app: api-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+          # annotations:
+          #   prometheus.io/scrape: "true"
+          #   prometheus.io/path: /metrics
+          #   prometheus.io/port: "3000"
+    spec:
+      containers:
+        - name: api-gateway
+          image: mccor/api-gateway
+          ports:
+            - containerPort: 3000

@@ -9,9 +9,12 @@
     "order-provider",
     "notification"
   ],
+  "scripts": {
+    "build:common": "yarn workspace @microservices-for-real/common build",
+    "build:api-gateway": "yarn workspace @microservices-for-real/api-gateway build",
+    "build:order-lifecycle": "yarn workspace @microservices-for-real/order-lifecycle build",
+    "build:order-provider": "yarn workspace @microservices-for-real/order-provider build"
+  },
   "repository": "git@github.com:mccor2000/microservices-for-real.git",
-  "license": "MIT",
-  "dependencies": {
-    "ts-proto": "^1.136.1"
-  }
+  "license": "MIT"
 }

@@ -1,0 +1,15 @@
+api-gateway:
+  deployment:
+    replicas: 2
+
+prometheus:
+  alertmanager:
+    enabled: false
+  pushgateway:
+    enabled: false
+  nodeExporter:
+    enabled: false
+
+grafana:
+  service:
+    type: NodePort
